@@ -29,7 +29,6 @@ def normalize(df):
 
 def calculate_nominator(df, df_mean):
     nominator = 0
-    print(df)
     for column in df:
         for value in df[column]:
             nominator += pow(value - df_mean, 2)
@@ -59,9 +58,9 @@ def standardize(df):
 
 def test_min_max():
     df = generate_input()
-    normalized_df = normalize(df)
+    normalized_df = normalize(df.copy())
     scaler = MinMaxScaler()
-    sklearn_df = pd.DataFrame(scaler.fit_transform(df), columns=df.columns)
+    sklearn_df = pd.DataFrame(scaler.fit_transform(df.copy()), columns=df.columns)
     df_diff = pd.concat([sklearn_df.round(2), normalized_df]).drop_duplicates(keep=False)
 
     print(f"Original dataframe\n {df} \n-------\n")
@@ -72,29 +71,28 @@ def test_min_max():
 
 def test_standardization():
     df = generate_input()
-    standardized_df = standardize(df)
+    standardized_df = standardize(df.copy())
     scaler = StandardScaler()
     scaler.fit(df)
     scaler.transform(df)
     df_diff = pd.concat([df.round(2), standardized_df]).drop_duplicates(keep=False)
 
     print(f"Original dataframe\n {df} \n-------\n")
-    print(f"Min-max normalized dataframe\n {standardized_df} \n-------\n")
-    print(f"Sklearn normalized dataframe\n {sklearn_df} \n-------\n")
+    print(f"Standardization normalized dataframe\n {standardized_df} \n-------\n")
+    print(f"Sklearn normalized dataframe\n {df} \n-------\n")
     print(f"Differences\n {df_diff} \n-------\n")
 
 
 if __name__ == '__main__':
     df = generate_input()
-    # normalized_df = normalize(df)
-    # standardized_df = standardize(df)
 
-    # print(df)
-    # print("------")
-    # print(normalized_df)
-    # print("------")
-    # print(standardized_df)
-    # print("------")
+    normalized_df = normalize(df.copy())
+
+    standardized_df = standardize(df.copy())
+
+    print(f"Original dataframe\n {df} \n-------\n")
+    print(f"Min-max normalized dataframe\n {normalized_df} \n-------\n")
+    print(f"Standardization normalized dataframe\n {standardized_df} \n-------\n")
 
     # test_min_max()
-    test_standardization()
+    # test_standardization()
